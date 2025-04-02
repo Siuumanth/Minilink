@@ -1,23 +1,26 @@
-import {express} from 'express';
+const express = require("express");
 const path = require("path");
+
+const app = express();
+const port = 5000
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, "public")));
 
-const app = express();
-const port = 3000;
 
+app.get('/', (req, res) => {
+    res.redirect('/home');
+})
 
 
 app.post('/home', (req, res) => {
     const url = req.body.url;
-    console.log(url);
+    console.log(url+"  sfasf");
+    res.json({success : true})
 })
-
-
-
-app.use(express.static(__dirname));
-
 
 app.get("/success", (req,res) => {
     res.sendFile(path.join(__dirname, "public", "success.html"), (err) => {
