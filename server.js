@@ -16,11 +16,30 @@ app.get('/', (req, res) => {
 })
 
 
-app.post('/home', (req, res) => {
-    const url = req.body.url;
-    console.log(url+"  sfasf");
-    res.json({success : true})
-})
+
+app.post('/home', async (req, res) => {
+    const  url  = req.body.url;
+
+    if (!url) {
+        return res.status(400).json({ success: false, error: "Invalid URL" });
+    }
+    try {
+        // 🔹 Check if URL is valid
+        const response = await fetch(url, { method: "HEAD" });
+console.log('response got')
+
+        if (!response.ok) {
+            return res.status(400).json({ success: false, error: "URL is not reachable" });
+        }
+        console.log(`${url} is valid ✅`);
+        res.json({ success: true, redirect: "/success" });
+
+    } catch (error) {
+        res.status(400).json({ success: false, error: "URL validation failed",message:error });
+    }
+    console.log(url);
+});
+
 
 app.get("/success", (req,res) => {
     res.sendFile(path.join(__dirname, "public", "success.html"), (err) => {
