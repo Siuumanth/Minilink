@@ -1,4 +1,3 @@
-const { db } = require("./firebase.js");
 const crypto = require("crypto");
 
 class Link {
@@ -20,3 +19,6 @@ class Link {
     };
   }
 }
+
+
+module.exports = { Link };

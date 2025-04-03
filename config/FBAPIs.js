@@ -4,16 +4,20 @@ const crypto = require("crypto");
 
 
 async function addURL(link) {
-  const doc = db.collection("links").doc(link.hashed);
-
-  if (await doc.get().exists) {
+  console.log(link.hashed);
+  const docRef = db.collection("links").doc(link.hashed); // Set ID to hashed value
+  
+//This statement accesses the "links" collection in Firestore, creates or references a document using link.hashed as its unique ID, and stores the reference in docRef for further operations.
+  const doc = await docRef.get();
+  if (doc.exists) {
     console.log("URL already exists");
     return;
   }
-  const docRef = db.collection("links").doc();
+
   await docRef.set(link.toJSON());
-  console.log("URL added ", docRef.id)
+  console.log("URL added with hashed ID:", link.hashed);
 }
+
 
 
 
@@ -33,7 +37,7 @@ async function incrementClicks(hashed) {
   console.log("Clicks updated for", hashed, "New count:", newClicks);
 }
 
-const newLink = new Link("syedboy", "https://example.com");
+const newLink = new Link( "https://example.com");
 addURL(newLink);
 
 
