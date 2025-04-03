@@ -1,12 +1,17 @@
+require("dotenv").config();
+
 const admin = require("firebase-admin");
 
-// Load Firebase service account key
-const serviceAccount = require("./path/to/your-service-account.json");
-
+// Parse JSON from .env
+const firebaseConfig = JSON.parse(process.env.FB_CREDS.toString());
+console.log(firebaseConfig)
+// Initialize Firebase
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(firebaseConfig),
 });
 
-const db = admin.firestore();
+console.log("Firebase initialized successfully!");
 
-module.exports = db;
+const db = admin.firestore(); // <-- Ensure this is included
+
+module.exports = { db };
